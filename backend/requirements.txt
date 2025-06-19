@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+httpx
+python
+transformers
+langchain
+langchain-huggingface
+torch
+newsapi-python
+supabase
+dotenv
+apscheduler>=3.10.1
