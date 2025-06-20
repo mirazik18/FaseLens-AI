@@ -5,8 +5,14 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, Shield, TrendingUp, Zap, Users, Globe } from 'lucide-react';
+import { useRef } from 'react';
 
 const Index = () => {
+  const analyzeRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollToAnalyze = () => {
+    analyzeRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
   return (
     <div className="min-h-screen bg-white">
       <Header />
@@ -27,7 +33,7 @@ const Index = () => {
               neutral analysis using advanced AI to help you stay informed with objective insights.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-8">
+              <Button size="lg" className="bg-blue-600 hover:bg-blue-700 px-8"  onClick={scrollToAnalyze}>
                 Start Analyzing
               </Button>
               <Button size="lg" variant="outline" className="px-8">
@@ -153,7 +159,9 @@ const Index = () => {
       </section>
 
       {/* Analyze Section */}
-      <AnalyzeSection />
+      <div ref={analyzeRef}>
+        <AnalyzeSection />
+      </div>
 
       {/* Stats Section */}
       <section className="py-16 bg-blue-600">

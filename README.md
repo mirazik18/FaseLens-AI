@@ -1,5 +1,5 @@
 # FactLens: AI-Powered News Analysis Platform
-
+# https://fact-lens-ai.vercel.app/
 FactLens is a full-stack AI-powered web application that fetches real-time news articles, analyzes their political bias and credibility using NLP models, and presents key insights through an interactive web interface.
 
 ## 🔍 Features

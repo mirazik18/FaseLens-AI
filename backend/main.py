@@ -15,6 +15,7 @@ async def lifespan(app: FastAPI):
         model="facebook/bart-large-mnli",
         device=device
     )
+    
     app.state.summarizer = pipeline(
         "summarization",
         model="facebook/bart-large-cnn",
