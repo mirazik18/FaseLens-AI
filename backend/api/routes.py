@@ -126,10 +126,10 @@ async def analyze_article(
         analyzedAt=datetime.now(timezone.utc)
     )
 
-@router.post("/fetch-news")
-async def trigger_fetch_news():
-    try:
-        await fetch_and_store()
-        return {"status": "success", "message": "News articles fetched and stored."}
-    except Exception as e:
-        return {"status": "error", "message": str(e)}
+# @router.post("/fetch-news")
+# async def trigger_fetch_news():
+#     try:
+#         await fetch_and_store()
+#         return {"status": "success", "message": "News articles fetched and stored."}
+#     except Exception as e:
+#         return {"status": "error", "message": str(e)}
