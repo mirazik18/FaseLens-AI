@@ -10,4 +10,5 @@ newsapi-python
 supabase
 dotenv
 apscheduler>=3.10.1
+lxml_html_clean
 newspaper3k
