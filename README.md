@@ -30,7 +30,7 @@ FactLens is a full-stack AI-powered web application that fetches real-time news 
 ```bash
 git clone https://github.com/<your-username>/FactLens-AI.git
 cd FactLens-AI
-
+```
 
 ### 2. Backend Setup
 ```bash
@@ -49,7 +49,7 @@ bash
 Copy
 Edit
 uvicorn main:app --reload
-
+```
 
 ### 3. Frontend Setup
 ```bash
@@ -66,7 +66,8 @@ Edit
 cd frontend
 npm install
 npm run dev
-🧠 Example Output
+```
+### 🧠 Example Output
 Once an article is analyzed, you will see:
 
 Political bias score (0–100)
