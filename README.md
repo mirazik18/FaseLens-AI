@@ -32,7 +32,8 @@ git clone https://github.com/<your-username>/FactLens-AI.git
 cd FactLens-AI
 
 
-2. Backend Setup
+### 2. Backend Setup
+```bash
 Create a .env file in the backend/ directory:
 NEWSAPI_KEY=your_newsapi_key
 SUPABASE_URL=your_supabase_url
@@ -50,9 +51,9 @@ Edit
 uvicorn main:app --reload
 
 
-3. Frontend Setup
+### 3. Frontend Setup
+```bash
 Create .env in frontend/:
-
 env
 Copy
 Edit
