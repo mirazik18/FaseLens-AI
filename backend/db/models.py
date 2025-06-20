@@ -13,7 +13,7 @@ class ArticleInDB(BaseModel):
     urlToImage: Optional[str]
     publishedAt: datetime
     content: Optional[str]
-
+    hasAnalysis: Optional[bool] = False
 class ArticleResponse(ArticleInDB):
     id: int
 
@@ -25,3 +25,15 @@ class AnalysisResponse(BaseModel):
     summary: str
     analyzedAt: datetime
     key_points: Optional[List[str]]
+
+class IncomingArticle(BaseModel):
+    source_id: Optional[str]
+    source_name: str
+    author: Optional[str]
+    title: str
+    description: Optional[str]
+    url: str
+    urlToImage: Optional[str]
+    publishedAt: datetime
+    content: Optional[str]
+    hasAnalysis: Optional[bool] = False

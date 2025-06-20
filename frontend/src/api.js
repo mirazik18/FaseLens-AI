@@ -1,7 +1,8 @@
 import axios from "axios";
+import.meta.env.VITE_API_BASE_URL
 
 // Base URL: use env var if set, fallback to localhost
-const API_BASE = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL;
 
 const api = axios.create({
   baseURL: API_BASE,
@@ -18,6 +19,8 @@ export const listArticles = (filters = {}) =>
 export const getArticle = (id) =>
   api.get(`/articles/${id}`).then(res => res.data);
 
+export const getAnalyses = (article_id) =>
+  api.get(`/articles/${article_id}/analyses`).then(res => res.data);
 // Analyze raw text or existing article:
 // - provide { text } for freeform
 // - or pass article_id as query param: /analyze?article_id=123

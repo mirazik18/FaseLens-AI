@@ -8,6 +8,7 @@ from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain
 from db.client import supabase_client
 from db.models import ArticleResponse, AnalysisResponse, ArticleInDB
+from tasks import fetch_and_store
 
 router = APIRouter()
 logging.basicConfig(level=logging.DEBUG)
@@ -23,6 +24,7 @@ class AnalyzeRequest(BaseModel):
 async def list_articles(query: ArticleQuery = Depends()):
     builder = supabase_client.table("articles")
     result = builder.select("*").execute()
+    logger.debug("Fetched articles data: %s", result.data)
     if not result.data:
         raise HTTPException(status_code=500, detail="Failed to fetch articles")
 
@@ -32,9 +34,17 @@ async def list_articles(query: ArticleQuery = Depends()):
 @router.get("/articles/{article_id}", response_model=ArticleResponse)
 async def get_article(article_id: int):
     res = supabase_client.table("articles").select("*").eq("id", article_id).single().execute()
-    if res.error or not res.data:
+    if not res.data:
         raise HTTPException(status_code=404, detail="Article not found")
     return ArticleResponse(**res.data)
+
+
+@router.get("/articles/{article_id}/analyses", response_model=List[AnalysisResponse])
+async def get_analyses(article_id: int):
+    res = supabase_client.table("analyses").select("*").eq("article_id", article_id).order("analyzedAt", desc=True).execute()
+    if not res.data:
+        return []
+    return [AnalysisResponse(**item) for item in res.data]
 
 @router.post("/analyze", response_model=AnalysisResponse)
 async def analyze_article(
@@ -45,7 +55,7 @@ async def analyze_article(
     # Determine input text
     if article_id:
         res = supabase_client.table("articles").select("*").eq("id", article_id).single().execute()
-        if res.error or not res.data:
+        if  not res.data:
             raise HTTPException(status_code=404, detail="Article not found")
         article = ArticleInDB(**res.data)
         text = " ".join(filter(None, [article.title, article.description, article.content]))
@@ -98,8 +108,11 @@ async def analyze_article(
             "analyzedAt": datetime.now(timezone.utc).isoformat()
         }
         insert = supabase_client.table("analyses").insert(analysis_payload).execute()
-        if insert.error:
-            raise HTTPException(status_code=500, detail=insert.error.message)
+        if not insert:
+            raise HTTPException(status_code=500, detail="Failed to insert analysis data")
+        update = supabase_client.table("articles").update({"hasAnalysis": True}).eq("id", article.id).execute()
+        if not update:
+            raise HTTPException(status_code=500, detail="Failed to update article with analysis status")
         return AnalysisResponse(**insert.data[0])
 
     # Return ephemeral analysis
@@ -112,3 +125,11 @@ async def analyze_article(
         key_points=key_points,
         analyzedAt=datetime.now(timezone.utc)
     )
+
+@router.post("/fetch-news")
+async def trigger_fetch_news():
+    try:
+        await fetch_and_store()
+        return {"status": "success", "message": "News articles fetched and stored."}
+    except Exception as e:
+        return {"status": "error", "message": str(e)}
