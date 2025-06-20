@@ -2,7 +2,6 @@ fastapi
 uvicorn
 pydantic
 httpx
-python
 transformers
 langchain
 langchain-huggingface
