@@ -31,7 +31,7 @@ const AnalyzeSection = () => {
         });
       } catch (err) {
         console.error(err);
-        alert("Analysis failed: " + (err.response?.data?.detail || err.message));
+        alert("Analhuiysis failed: " + (err.response?.data?.detail || err.message));
       } finally {
         setIsAnalyzing(false);
       }
